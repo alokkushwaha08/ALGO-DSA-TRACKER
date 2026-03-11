@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>DSA Tracker</title>
+<link rel="stylesheet" href="src/styles/style.css">
+
+</head>
+
+<body>
+
+<h1>DSA Problem Tracker</h1>
+
+<div class="progress-container">
+
+<div class="progress-bar-bg">
+<div id="progressBar"></div>
+</div>
+
+<div class="progress-text">
+Solved <span id="solvedCount">0</span> /
+<span id="totalCount">0</span>
+</div>
+
+<div class="streak">
+🔥 Daily Streak: <span id="streakCount">0</span> days
+</div>
+
+</div>
+
+<input id="searchBox" placeholder="Search Problem..." onkeyup="searchProblem()">
+
+<div class="controls">
+
+<button onclick="showAll()">All</button>
+<button onclick="showSolved()">Solved</button>
+<button onclick="showUnsolved()">Unsolved</button>
+
+<button onclick="toggleDarkMode()">Dark Mode</button>
+
+<button onclick="exportCSV()">Export Progress</button>
+
+</div>
+
+<table>
+
+<thead>
+<tr>
+<th>S.No</th>
+<th>Problem</th>
+<th>Link</th>
+<th>Solved</th>
+<th>Revisited</th>
+<th>Solve Count</th>
+</tr>
+</thead>
+
+<tbody id="tableBody"></tbody>
+
+</table>
+
+<script src="src/utils/tracker.js"></script>
+
+</body>
+</html>
