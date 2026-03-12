@@ -1,4 +1,3 @@
-// document.addEventListener("DOMContentLoaded", function () {
 const data = {
 
 "Array":{
@@ -117,10 +116,10 @@ total++;
 
 document.getElementById("totalCount").innerText=total;
 
-function toggleSolved(checkbox,id){
+/* ⭐ ONLY FIX → GLOBAL FUNCTIONS */
 
+window.toggleSolved = function(checkbox,id){
 let row=checkbox.parentElement.parentElement;
-
 if(checkbox.checked){
 row.classList.add("solved");
 localStorage.setItem("solved-"+id,true);
@@ -129,14 +128,11 @@ updateStreak();
 row.classList.remove("solved");
 localStorage.removeItem("solved-"+id);
 }
-
 updateProgress();
 }
 
-function toggleRevisited(checkbox,id){
-
+window.toggleRevisited = function(checkbox,id){
 let row=checkbox.parentElement.parentElement;
-
 if(checkbox.checked){
 row.classList.add("revisited");
 localStorage.setItem("revisited-"+id,true);
@@ -144,196 +140,125 @@ localStorage.setItem("revisited-"+id,true);
 row.classList.remove("revisited");
 localStorage.removeItem("revisited-"+id);
 }
-
 }
 
-function increase(button,id){
-
+window.increase = function(button,id){
 let count=button.parentElement.querySelector(".count");
-
 let value=parseInt(count.innerText)+1;
-
 count.innerText=value;
-
 localStorage.setItem("count-"+id,value);
-
 }
 
-function decrease(button,id){
-
+window.decrease = function(button,id){
 let count=button.parentElement.querySelector(".count");
-
 let value=parseInt(count.innerText);
-
 if(value>0){
 value--;
 count.innerText=value;
 localStorage.setItem("count-"+id,value);
 }
-
 }
 
 function restoreState(row,id){
-
 let solved=localStorage.getItem("solved-"+id);
 let revisited=localStorage.getItem("revisited-"+id);
 let count=localStorage.getItem("count-"+id);
-
 let solvedBox=row.querySelector("td:nth-child(4) input");
 let revisitedBox=row.querySelector("td:nth-child(5) input");
 let countSpan=row.querySelector(".count");
-
 if(solved){
 solvedBox.checked=true;
 row.classList.add("solved");
 }
-
 if(revisited){
 revisitedBox.checked=true;
 row.classList.add("revisited");
 }
-
 if(count){
 countSpan.innerText=count;
 }
-
 }
 
 function updateProgress(){
-
-let solved=document.querySelectorAll(".problem").length -
-document.querySelectorAll(".problem:not(.solved)").length;
-
 let solvedRows=document.querySelectorAll(".solved").length;
-
 document.getElementById("solvedCount").innerText=solvedRows;
-
 let percent=(solvedRows/total)*100;
-
 document.getElementById("progressBar").style.width=percent+"%";
-
 }
 
-function searchProblem(){
-
+window.searchProblem = function(){
 let input=document.getElementById("searchBox").value.toLowerCase();
-
 let rows=document.querySelectorAll("tbody tr");
-
 rows.forEach(row=>{
-
 let problem=row.querySelector(".problem");
-
 if(problem){
-
 let text=problem.innerText.toLowerCase();
-
 row.style.display=text.includes(input)?"":"none";
-
 }
-
 });
-
 }
 
-function showAll(){
+window.showAll = function(){
 document.querySelectorAll("tbody tr").forEach(r=>r.style.display="");
 }
 
-function showSolved(){
+window.showSolved = function(){
 document.querySelectorAll("tbody tr").forEach(r=>{
-if(r.classList.contains("solved")){
-r.style.display="";
-}else{
-r.style.display="none";
-}
+if(r.classList.contains("solved")) r.style.display="";
+else r.style.display="none";
 });
 }
 
-function showUnsolved(){
+window.showUnsolved = function(){
 document.querySelectorAll("tbody tr").forEach(r=>{
-if(!r.classList.contains("solved") && r.querySelector(".problem")){
-r.style.display="";
-}else{
-r.style.display="none";
-}
+if(!r.classList.contains("solved") && r.querySelector(".problem")) r.style.display="";
+else r.style.display="none";
 });
 }
 
-function toggleDarkMode(){
-
+window.toggleDarkMode = function(){
 document.body.classList.toggle("dark");
-
-if(document.body.classList.contains("dark")){
-localStorage.setItem("darkMode","on");
-}else{
-localStorage.setItem("darkMode","off");
-}
-
+if(document.body.classList.contains("dark")) localStorage.setItem("darkMode","on");
+else localStorage.setItem("darkMode","off");
 }
 
 if(localStorage.getItem("darkMode")==="on"){
 document.body.classList.add("dark");
 }
 
-function exportCSV(){
-
+window.exportCSV = function(){
 let rows=document.querySelectorAll("tbody tr");
-
 let csv="S.No,Problem,Solved,Solve Count\n";
-
 rows.forEach(row=>{
-
 let problem=row.querySelector(".problem");
-
 if(problem){
-
 let serial=row.children[0].innerText;
 let name=problem.innerText;
 let solved=row.classList.contains("solved")?"Yes":"No";
 let count=row.querySelector(".count").innerText;
-
 csv+=serial+","+name+","+solved+","+count+"\n";
-
 }
-
 });
-
 let blob=new Blob([csv],{type:"text/csv"});
-
 let url=URL.createObjectURL(blob);
-
 let a=document.createElement("a");
-
 a.href=url;
 a.download="dsa_progress.csv";
-
 a.click();
-
 }
 
 function updateStreak(){
-
 let today=new Date().toDateString();
-
 let last=localStorage.getItem("lastSolvedDate");
-
 let streak=parseInt(localStorage.getItem("streak")||0);
-
 if(last!==today){
-
 streak++;
-
 localStorage.setItem("streak",streak);
 localStorage.setItem("lastSolvedDate",today);
-
 }
-
 document.getElementById("streakCount").innerText=streak;
-
 }
 
 document.getElementById("streakCount").innerText=localStorage.getItem("streak")||0;
 
 updateProgress();
-// });
