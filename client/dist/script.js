@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+// document.addEventListener("DOMContentLoaded", function () {
 const data = {
 
 "Array":{
@@ -336,4 +336,4 @@ document.getElementById("streakCount").innerText=streak;
 document.getElementById("streakCount").innerText=localStorage.getItem("streak")||0;
 
 updateProgress();
-});
+// });
