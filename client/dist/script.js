@@ -119,15 +119,29 @@ document.getElementById("totalCount").innerText=total;
 /* ⭐ ONLY FIX → GLOBAL FUNCTIONS */
 
 window.toggleSolved = function(checkbox,id){
-let row=checkbox.parentElement.parentElement;
+
+let row = checkbox.parentElement.parentElement;
+let countSpan = row.querySelector(".count");
+
 if(checkbox.checked){
-row.classList.add("solved");
-localStorage.setItem("solved-"+id,true);
-updateStreak();
+
+    row.classList.add("solved");
+    localStorage.setItem("solved-"+id,true);
+
+    // ⭐ AUTO INCREASE COUNT
+    let value = parseInt(countSpan.innerText) + 1;
+    countSpan.innerText = value;
+    localStorage.setItem("count-"+id,value);
+
+    updateStreak();
+
 }else{
-row.classList.remove("solved");
-localStorage.removeItem("solved-"+id);
+
+    row.classList.remove("solved");
+    localStorage.removeItem("solved-"+id);
+
 }
+
 updateProgress();
 }
 
